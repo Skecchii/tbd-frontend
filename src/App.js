@@ -1,22 +1,23 @@
-import './App.css';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchData } from './store/dataSlice'
 
 function App() {
+  const dispatch = useDispatch()
+  const data = useSelector(state => state.data.data)
+
+  useEffect(() => {
+    dispatch(fetchData())
+  }, [dispatch])
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ul>
+        {data.map(product => (
+          <li key={product._id}>{product.name}</li>
+        ))}
+      </ul>
+    </>
   );
 }
 
