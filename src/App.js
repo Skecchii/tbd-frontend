@@ -1,22 +1,20 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchData } from './store/dataSlice'
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import CreateForm from "./pages/CreateForm";
+import DetailPage from "./pages/DetailPage";
+import EditForm from "./pages/EditForm";
 
 function App() {
-  const dispatch = useDispatch()
-  const data = useSelector(state => state.data.data)
-
-  useEffect(() => {
-    dispatch(fetchData())
-  }, [dispatch])
-  
   return (
     <>
-      <ul>
-        {data.map(product => (
-          <li key={product._id}>{product.name}</li>
-        ))}
-      </ul>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/create" element={<CreateForm />} />
+        <Route path="/product/:productId" element={<DetailPage />} />
+        <Route path="/product/:productId/edit" element={<EditForm />} />
+      </Routes>
     </>
   );
 }
