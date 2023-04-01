@@ -27,12 +27,20 @@ const deleteExistingProduct = createAsyncThunk(
 
 const updateExistingProduct = createAsyncThunk(
   "products/updateExistingProduct",
-  async ({productId, productData}) => {
+  async ({ productId, productData }) => {
     const response = await axios.patch(
       `http://localhost:4000/product/${productId}`,
       productData
     );
     return response.data;
+  }
+);
+
+const getProductsByCategory = createAsyncThunk(
+  "products/getProductsByCategory",
+  async (categoryName) => {
+    const response = await axios.get(`http://localhost:4000/product/${categoryName}`)
+    return response.data
   }
 );
 
@@ -97,7 +105,18 @@ const productsSlice = createSlice({
       .addCase(updateExistingProduct.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      });
+      })
+      .addCase(getProductsByCategory.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getProductsByCategory.fulfilled, (state, action) => {
+        state.status = "succes";
+        state.products = action.payload;
+      })
+      .addCase(getProductsByCategory.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
   },
 });
 
@@ -106,5 +125,6 @@ export {
   createNewProduct,
   deleteExistingProduct,
   updateExistingProduct,
+  getProductsByCategory
 };
 export default productsSlice.reducer;
