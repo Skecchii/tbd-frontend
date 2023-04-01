@@ -90,13 +90,13 @@ function ProductEdit() {
         required
       >
         <option value="">--Select a category--</option>
-        <option value="Engine">Engine</option>
-        <option value="Transmission">Transmission</option>
-        <option value="Suspension">Suspension</option>
-        <option value="Brakes">Brakes</option>
-        <option value="Exhaust">Exhaust</option>
-        <option value="Interior">Interior</option>
-        <option value="Exterior">Exterior</option>
+        <option value="engine">Engine</option>
+        <option value="transmission">Transmission</option>
+        <option value="suspension">Suspension</option>
+        <option value="brakes">Brakes</option>
+        <option value="exhaust">Exhaust</option>
+        <option value="interior">Interior</option>
+        <option value="exterior">Exterior</option>
       </select>
 
       <label htmlFor="imageUrl">Image URL</label>
@@ -109,7 +109,7 @@ function ProductEdit() {
         required
       />
 
-      <button type="submit">Create Product</button>
+      <button type="submit">Update Product</button>
     </form>
   );
 }
