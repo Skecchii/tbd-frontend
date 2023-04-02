@@ -83,35 +83,6 @@ const PageNumberButton = styled.button`
     color: #66fcf1;
   }
 `;
-const CreateButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const CreateButton = styled.button`
-  display: flex;
-  justify-content: center;
-  color: #fff;
-  width: 12rem;
-  background-color: #45a29e;
-  padding: 0.75rem 1.25rem;
-  border: none;
-  border-radius: 0.75rem;
-  font-size: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: #66fcf1;
-    color: #0b0c10;
-  }
-
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-`;
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -125,23 +96,18 @@ const Products = () => {
     setCurrentPage(pageNumber);
   };
 
+  const [displayedProducts, setDisplayedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9;
 
-  // indexes the first and last products to display on the current page
-  const lastIndex = currentPage * productsPerPage;
-  const firstIndex = lastIndex - productsPerPage;
-
-  // get the produts to display on the current page
-  const displayedProducts = products.slice(firstIndex, lastIndex);
+  useEffect(() => {
+    setDisplayedProducts(
+      products.slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage)
+    );
+  }, [products, currentPage]);
 
   return (
     <>
-      <CreateButtonContainer>
-        <CreateButton>
-          <Link to="/create">Create Product</Link>
-        </CreateButton>
-      </CreateButtonContainer>
       <ProductGridContainer>
         {displayedProducts.map((product) => (
           <ProductItemContainer key={product._id}>
