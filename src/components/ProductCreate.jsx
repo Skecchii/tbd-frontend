@@ -52,7 +52,6 @@ function ProductCreate() {
 
   return (
     <>
-      <button onClick={() => console.log(`current FormData: ${JSON.stringify(formData)}`)}>check data</button>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
