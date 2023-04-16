@@ -1,46 +1,68 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const fetchProducts = createAsyncThunk("products/fetchProducts", async () => {
-  const response = await axios.get("http://localhost:4000/product");
-  return response.data;
-});
+const fetchProducts = createAsyncThunk("products/fetchProducts",
+  async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/products");
+      return response.data;
+    } catch (err) {
+      console.error(`failed to fetch products, ${err}`);
+    }
+  });
 
-const createNewProduct = createAsyncThunk(
-  "products/createNewProduct",
+const createNewProduct = createAsyncThunk("products/createNewProduct",
   async (productData) => {
-    const response = await axios.post(
-      "http://localhost:4000/product",
-      productData
-    );
-    return response.data;
+    try {
+      const response = await axios.post("http://localhost:4000/products/create", productData);
+      return response.data;
+    } catch (err) {
+      console.error(`failed to create product, ${err}`);
+    }
   }
 );
 
-const deleteExistingProduct = createAsyncThunk(
-  "products/deleteExistingProduct",
+const deleteExistingProduct = createAsyncThunk("products/deleteExistingProduct",
   async (productId) => {
-    await axios.delete(`http://localhost:4000/product/${productId}`);
-    return productId;
+    try {
+      await axios.delete(`http://localhost:4000/products/${productId}/delete`);
+      return productId;
+    } catch (err) {
+      console.error(`failed to delete product, ${err}`)
+    }
   }
 );
 
-const updateExistingProduct = createAsyncThunk(
-  "products/updateExistingProduct",
+const updateExistingProduct = createAsyncThunk("products/updateExistingProduct",
   async ({ productId, productData }) => {
-    const response = await axios.patch(
-      `http://localhost:4000/product/${productId}`,
-      productData
-    );
-    return response.data;
+    try {
+      const response = await axios.patch(`http://localhost:4000/products/${productId}/update`, productData);
+      return response.data;
+    } catch (err) {
+      console.error(`failed to update the product, ${err}`)
+    }
   }
 );
 
-const getProductsByCategory = createAsyncThunk(
-  "products/getProductsByCategory",
+const getProductsByCategory = createAsyncThunk("products/getProductsByCategory",
   async (categoryName) => {
-    const response = await axios.get(`http://localhost:4000/product/${categoryName}`)
-    return response.data
+    try {
+      const response = await axios.get(`http://localhost:4000/products/category/${categoryName}`)
+      return response.data
+    } catch (err) {
+      console.error(`failed to get products by category, ${err}`)
+    }
+  }
+);
+
+const uploadImage = createAsyncThunk("products/uploadImage",
+  async (formData) => {
+    try {
+      const response = await axios.post("http://localhost:4000/cloudinary/upload", formData);
+      return response.data
+    } catch (err) {
+      console.error(`failed to upload image, ${err}`)
+    }
   }
 );
 
@@ -62,7 +84,7 @@ const productsSlice = createSlice({
         state.products = action.payload;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = "error";
         state.error = action.error.message;
       })
       .addCase(createNewProduct.pending, (state, action) => {
@@ -73,7 +95,7 @@ const productsSlice = createSlice({
         state.products.push(action.payload);
       })
       .addCase(createNewProduct.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = "error";
         state.error = action.error.message;
       })
       .addCase(deleteExistingProduct.pending, (state, action) => {
@@ -86,7 +108,7 @@ const productsSlice = createSlice({
         );
       })
       .addCase(deleteExistingProduct.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = "error";
         state.error = action.error.message;
       })
       .addCase(updateExistingProduct.pending, (state, action) => {
@@ -103,7 +125,7 @@ const productsSlice = createSlice({
         };
       })
       .addCase(updateExistingProduct.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = "error";
         state.error = action.error.message;
       })
       .addCase(getProductsByCategory.pending, (state, action) => {
@@ -114,9 +136,20 @@ const productsSlice = createSlice({
         state.products = action.payload;
       })
       .addCase(getProductsByCategory.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = "error";
         state.error = action.error.message;
       })
+      .addCase(uploadImage.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(uploadImage.fulfilled, (state, action) => {
+        state.status = "success";
+        state.imageUrl = action.payload;
+      })
+      .addCase(uploadImage.rejected, (state, action) => {
+        state.status = "error";
+        state.error = action.error.message;
+      });
   },
 });
 
@@ -125,6 +158,7 @@ export {
   createNewProduct,
   deleteExistingProduct,
   updateExistingProduct,
-  getProductsByCategory
+  getProductsByCategory,
+  uploadImage
 };
 export default productsSlice.reducer;
