@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Products from "../components/Products";
 import CategoryProducts from "../components/CategoryProducts";
-
 import styled from "styled-components";
 
 const HeaderContainer = styled.h2`
@@ -17,7 +16,7 @@ const CategoriesContainer = styled.div`
 
 const CategoryButton = styled.button`
   background-color: transparent;
-  margin: 0 1rem;
+  margin: 0.25rem 1rem;
   border: none;
   font-size: 1rem;
   color: #66fcf1;
@@ -25,11 +24,9 @@ const CategoryButton = styled.button`
   border-radius: 0.25rem;
   text-decoration: none;
   position: relative;
-
   &:hover {
     color: #45a29e;
   }
-
   &::after {
     content: "";
     display: block;
@@ -43,11 +40,9 @@ const CategoryButton = styled.button`
     transform-origin: left;
     transition: transform 0.3s ease-in-out;
   }
-
   &:not(.active):hover::after {
     transform: scaleX(1);
   }
-
   &.active {
     border-bottom: 2px solid #66fcf1;
     color: #66fcf1;
@@ -62,21 +57,17 @@ const Home = () => {
 
   return (
     <main>
+      <CategoriesContainer>
+        <CategoryButton onClick={() => handleCategoryClick("all")} className={selectedCategory === 'all' ? 'active' : ''}>All</CategoryButton>
+        <CategoryButton onClick={() => handleCategoryClick("kissCut")} className={selectedCategory === 'kissCut' ? 'active' : ''}>Kiss Cut</CategoryButton>
+        <CategoryButton onClick={() => handleCategoryClick("peeker")} className={selectedCategory === 'peeker' ? 'active' : ''}>Peeker</CategoryButton>
+        <CategoryButton onClick={() => handleCategoryClick("boxSlap")} className={selectedCategory === 'boxSlap' ? 'active' : ''}>Box Slap</CategoryButton>
+      </CategoriesContainer>
       <HeaderContainer>
         {selectedCategory === 'all' ? (
           'Products'
-        ) : selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
+        ) : selectedCategory.split(/(?=[A-Z])/).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ')}
       </HeaderContainer>
-      <CategoriesContainer>
-        <CategoryButton onClick={() => handleCategoryClick("all")}>All</CategoryButton>
-        <CategoryButton onClick={() => handleCategoryClick("engine")}>Engine</CategoryButton>
-        <CategoryButton onClick={() => handleCategoryClick("transmission")}>Transmission</CategoryButton>
-        <CategoryButton onClick={() => handleCategoryClick("suspension")}>Suspension</CategoryButton>
-        <CategoryButton onClick={() => handleCategoryClick("brakes")}>Brakes</CategoryButton>
-        <CategoryButton onClick={() => handleCategoryClick("exhaust")}>Exhaust</CategoryButton>
-        <CategoryButton onClick={() => handleCategoryClick("interior")}>Interior</CategoryButton>
-        <CategoryButton onClick={() => handleCategoryClick("exterior")}>Exterior</CategoryButton>
-      </CategoriesContainer>
       {selectedCategory === "all" ? (
         <Products />
       ) : (
