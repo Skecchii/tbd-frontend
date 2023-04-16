@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa';
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
 const NavContainer = styled.div`
     position: fixed;
@@ -11,6 +13,9 @@ const NavContainer = styled.div`
     background-color: #333;
     transition: all 0.3s ease-in-out;
     z-index: 999;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 `;
 const Overlay = styled.div`
     position: fixed;
@@ -28,12 +33,15 @@ const NavHeader = styled.div`
     justify-content: flex-end;
     padding: .5rem;
 `;
+const NavIconsContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
 const NavIcon = styled.div`
     font-size: 1.5rem;
-    margin-left: auto;
+    margin-left: 1.25rem;
     transition: color 0.2s;
     cursor: pointer;
-
     &:hover {
         color: #66FCF1;
     }
@@ -45,67 +53,92 @@ const NavItems = styled.ul`
     display: flex;
     flex-direction: column;
     align-items: center;
-    `;
-
+`;
 const NavItem = styled.li`
     margin: .5rem 0;
 `;
-const NavLink = styled.a`
+const NavLink = styled(Link)`
     color: #fff;
     text-decoration: none;
     font-size: 1.25rem;
-
     &:hover {
         text-decoration: underline;
         color: #66FCF1;
     }
 `;
-const CartIcon = styled(FaShoppingCart)`
-`;
-const ButtonContainer = styled.button`
+const CartLink = styled(Link)`
     display: flex;
-    height: 65rem;
-    background: none;
-    border: none;
-`;
-const CartButton = styled.button`
-    color: #333;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
     border: none;
     border-radius: 0;
-    font-size: 1.25rem;
-    padding: .125rem 3.25rem;
+    font-size: 1.75rem;
     margin-top: auto;
-    transition: color 0.2s;
+    height: 5%;
+    background-color: #1f2833;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
     cursor: pointer;
-
     &:hover {
         background-color: #66FCF1;
+        color: #333;
     }
+`;
+const CartIcon = styled(Link)`
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    cursor: default;
+    &:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+`;
+const CartIndicator = styled.div`
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: #66FCF1;
+    border-radius: 50%;
 `;
 
 const SideNav = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const items = useSelector(state => state.cart.items)
 
     const toggleNav = () => {
         setIsOpen(!isOpen);
     };
 
+    const handleSideNavClick = () => {
+        setIsOpen(false)
+    }
+
     return (
         <>
-            <NavIcon>
-                <CartIcon />
-            </NavIcon>
-            <NavIcon onClick={toggleNav}>
-                {isOpen ? (
-                    <>
-                        <FaTimes />
-                    </>
-                ) : (
-                    <>
-                        <FaBars />
-                    </>
-                )}
-            </NavIcon>
+            <NavIconsContainer>
+                <NavIcon>
+                    <CartIcon to='/cart'>
+                        <FaShoppingCart />
+                        {items.length > 0 && <CartIndicator />}
+                    </CartIcon>
+                </NavIcon>
+                <NavIcon onClick={toggleNav}>
+                    {isOpen ? (
+                        <>
+                            <FaTimes />
+                        </>
+                    ) : (
+                        <>
+                            <FaBars />
+                        </>
+                    )}
+                </NavIcon>
+            </NavIconsContainer>
             <Overlay isOpen={isOpen} onClick={toggleNav} />
             <NavContainer isOpen={isOpen}>
                 <NavHeader>
@@ -115,21 +148,22 @@ const SideNav = () => {
                 </NavHeader>
                 <NavItems>
                     <NavItem>
-                        <NavLink href="/">Home</NavLink>
+                        <NavLink to="/" onClick={handleSideNavClick}>Home</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="#">Products</NavLink>
+                        <NavLink to="#" onClick={handleSideNavClick}>Products</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="#">About Us</NavLink>
+                        <NavLink to="#" onClick={handleSideNavClick}>About Us</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="#">Contact Us</NavLink>
+                        <NavLink to="#" onClick={handleSideNavClick}>Contact Us</NavLink>
                     </NavItem>
-                    <ButtonContainer>
-                        <CartButton>Cart</CartButton>
-                    </ButtonContainer>
+                    <NavItem>
+                        <NavLink to="/create" onClick={handleSideNavClick}>Create Product</NavLink>
+                    </NavItem>
                 </NavItems>
+                <CartLink to="/cart" onClick={handleSideNavClick}>Cart</CartLink>
             </NavContainer>
         </>
     );
