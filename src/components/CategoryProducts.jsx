@@ -115,7 +115,6 @@ const CategoryProducts = ({ selectedCategory }) => {
   
   return (
     <>
-      <h2>{selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}</h2>
       <ProductGridContainer>
         {displayedProducts.map((product) => (
           <ProductItemContainer key={product._id}>
