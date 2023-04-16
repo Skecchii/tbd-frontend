@@ -7,12 +7,16 @@ const FooterContainer = styled.footer`
     width: 100%;
     background: #0B0C10;
     color: #fff;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 const ItemContainer = styled.div`
-    margin-left: -3.5rem;
-    margin-right: 2rem;
-    width: 50%;
-    padding-left: 2rem;
+    width: 100%;
 `
 const FollowHeader = styled.h3`
     font-size: 1.5rem;
@@ -30,7 +34,6 @@ const SocialLink = styled.a`
     color: #fff;
     font-size: 1.5rem;
     transition: color 0.2s;
-
     &:hover {
         color: #66FCF1;
     }
