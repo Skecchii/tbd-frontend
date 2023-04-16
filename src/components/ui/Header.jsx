@@ -16,7 +16,6 @@ const Logo = styled.h1`
     color: #c5c6c7;
     font-weight: bold;
     display: inline-block;
-
     a {
         cursor: default;
         text-decoration: none;
@@ -27,45 +26,11 @@ const Logo = styled.h1`
         }
     }
 `;
-const CreateButtonContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-const CreateButton = styled.button`
-    display: flex;
-    justify-content: center;
-    color: #fff;
-    width: 12rem;
-    background-color: #45a29e;
-    padding: 0.75rem 1.25rem;
-    border: none;
-    border-radius: 0.75rem;
-    font-size: 1rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-
-    &:hover {
-        background-color: #66fcf1;
-        color: #0b0c10;
-    }
-
-    a {
-        text-decoration: none;
-        color: inherit;
-    }
-`;
 
 function Header() {
     return (
         <HeaderContainer>
             <Logo><Link to='/'>My App</Link></Logo>
-            <CreateButtonContainer>
-                <CreateButton>
-                    <Link to="/create">Create Product</Link>
-                </CreateButton>
-            </CreateButtonContainer>
             <SideNav />
         </HeaderContainer>
     );
