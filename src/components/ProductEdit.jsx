@@ -176,7 +176,6 @@ function ProductEdit() {
 
   return (
     <>
-      <button onClick={() => console.log(newImage)}>PRESS ME</button>
       <FormContainer onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor="name">Name</Label>
